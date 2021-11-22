@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[16795231179803732154,"build_script_build",false,12525842542950046087]],"local":[{"RerunIfChanged":{"output":"debug/build/msp-exp432p401r-5b210cdbb7ae003c/output","paths":["layout.ld","chip_layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

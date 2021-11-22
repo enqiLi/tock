@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[4420225423393259716,"build_script_build",false,7412333937037966467]],"local":[{"RerunIfChanged":{"output":"debug/build/stm32f3discovery-69b35770b0d3d530/output","paths":["layout.ld","chip_layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

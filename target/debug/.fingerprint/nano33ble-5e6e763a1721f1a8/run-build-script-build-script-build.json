@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[14500494056488745615,"build_script_build",false,7056344761990530291]],"local":[{"RerunIfChanged":{"output":"debug/build/nano33ble-5e6e763a1721f1a8/output","paths":["layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

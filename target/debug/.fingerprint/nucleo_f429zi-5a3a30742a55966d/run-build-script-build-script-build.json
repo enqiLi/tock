@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[16242583830323375363,"build_script_build",false,2186924391427081843]],"local":[{"RerunIfChanged":{"output":"debug/build/nucleo_f429zi-5a3a30742a55966d/output","paths":["layout.ld","chip_layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[11669903855940334014,"build_script_build",false,11210318286857331614]],"local":[{"RerunIfChanged":{"output":"debug/build/nrf52dk-1d1030c03e0f48b5/output","paths":["layout.ld","../../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

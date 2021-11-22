@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[11902655793965822578,"build_script_build",false,11005745382688355920]],"local":[{"RerunIfChanged":{"output":"debug/build/nrf52840dk-6a59df7114f00dee/output","paths":["layout.ld","../../kernel_layout.ld","../nrf52840_chip_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

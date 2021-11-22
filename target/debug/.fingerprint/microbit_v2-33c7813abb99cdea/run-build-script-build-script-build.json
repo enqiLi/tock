@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[16559678289863306908,"build_script_build",false,17975612749775427574]],"local":[{"RerunIfChanged":{"output":"debug/build/microbit_v2-33c7813abb99cdea/output","paths":["layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

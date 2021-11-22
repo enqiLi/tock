@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[14561840263521504621,"build_script_build",false,14255215795578936666]],"local":[{"RerunIfChanged":{"output":"debug/build/earlgrey-nexysvideo-0dd872d39144e7b6/output","paths":["layout.ld","../../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

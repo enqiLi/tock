@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[724269136917467006,"build_script_build",false,15560538884748899194]],"local":[{"RerunIfChanged":{"output":"debug/build/clue_nrf52840-bebe69d77545389c/output","paths":["layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[5539805206456048278,"build_script_build",false,16075907113694732536]],"local":[{"RerunIfChanged":{"output":"debug/build/earlgrey-cw310-d7fa82b785fe8335/output","paths":["layout.ld","../../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

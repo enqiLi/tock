@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[1875193711261085576,"build_script_build",false,13305082844792780211]],"local":[{"RerunIfChanged":{"output":"debug/build/raspberry_pi_pico-9d297d8073093c14/output","paths":["layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

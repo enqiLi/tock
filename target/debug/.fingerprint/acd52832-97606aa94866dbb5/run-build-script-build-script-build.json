@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[2467009932659846069,"build_script_build",false,14245767904112629257]],"local":[{"RerunIfChanged":{"output":"debug/build/acd52832-97606aa94866dbb5/output","paths":["layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

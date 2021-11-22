@@ -1,0 +1,1 @@
+{"rustc":6963508677577525502,"features":"","target":0,"profile":0,"path":0,"deps":[[13970771584771640279,"build_script_build",false,2920166987478940979]],"local":[{"RerunIfChanged":{"output":"debug/build/litex_arty-d42494a862f8a945/output","paths":["layout.ld","../kernel_layout.ld"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}
