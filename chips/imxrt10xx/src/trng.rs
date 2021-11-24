@@ -66,12 +66,13 @@ register_structs! {
     // Statistical Check Run Length 6+ Limit
     // (0x038 => TRNG0_SCR6PL: ReadWrite<u32, CheckRunLen6PLim::Register>),
     // Statistical Check Run Length 6 Count
-    // (0x038 => TRNG0_SCR6PC: ReadOnly<u32, CheckRunLen6PCount::Register>),
+	// (0x038 => TRNG0_SCR6PC: ReadOnly<u32, CheckRunLen6PCount::Register>),
+	(0x008 => _reserved0),
 	// Status
 	(0x03C => TRNG0_STATUS: ReadOnly<u32, Status::Register>),
 	// Entropy Read Registers
 	(0x040 => TRNG0_ENT: [ReadOnly<u32, EntropyRead::Register>; 16]),
-	// Statistical Check Poker Count 1 and 0
+	// // Statistical Check Poker Count 1 and 0
 	// (0x080 => TRNG0_PKRCNT10: ReadOnly<u32, PokerCount10::Register>),
 	// // Statistical Check Poker Count 3 and 2
 	// (0x084 => TRNG0_PKRCNT32: ReadOnly<u32, PokerCount32::Register>),
@@ -87,7 +88,9 @@ register_structs! {
 	// (0x098 => TRNG0_PKRCNTDC: ReadOnly<u32, PokerCountDC::Register>),
 	// // Statistical Check Poker Count F and E
 	// (0x09C => TRNG0_PKRCNTFE: ReadOnly<u32, PokerCountFE::Register>),
-	// // Security Configuration
+
+	(0x080 => _reserved1),
+	// Security Configuration
 	// (0x0B0 => TRNG0_SEC_CFG: ReadWrite<u32, SecurityConfig::Register>),
 	// Interrupt Control
 	(0x0B4 => TRNG0_INT_CTRL: ReadWrite<u32, InterruptControl::Register>),
@@ -99,7 +102,7 @@ register_structs! {
 	// (0x0F0 => TRNG0_VID1: ReadOnly<u32, VID1::Register>),
 	// // Version ID (LS)
 	// (0x0F4 => TRNG0_VID2: ReadOnly<u32, VID2::Register>),
-
+	(0x0C0 => _reserved2),
         (0x100 => @END),
 
     }
@@ -480,14 +483,17 @@ impl<'a> hil::entropy::Entropy32<'a> for TRNG<'a> {
     fn get(&self) -> Result<(), ErrorCode> {
 	debug!("I am born!");
         // self.registers.TRNG0_MCTL.modify(Control::TSTOP_OK::OK);
-	debug!("Bogus read: {}", self.registers.TRNG0_ENT[0].read(EntropyRead::ENT));
+	// debug!("Bogus read: {}", self.registers.TRNG0_ENT[0].read(EntropyRead::ENT));
         self.registers.TRNG0_MCTL.modify(Control::TRNG_ACC::SET);
-	debug!("Access bit is set! It is {}", self.registers.TRNG0_MCTL.read(Control::TRNG_ACC));
+	for j in 0..100 {
+	    debug!("Access bit is set! It is {}", self.registers.TRNG0_MCTL.read(Control::TRNG_ACC));
+	}
+	debug!("{}", self.registers.TRNG0_MCTL.is_set(Control::TRNG_ACC));
 	
 	// self.registers.TRNG0_MASK.modify(InterruptMask::ENT_VAL::SET);
-	// debug!("ENT_VAL in MASK");
+	// debug!("ENT_VAL in MASK is now {}", self.registers.TRNG0_MASK.read(InterruptMask::ENT_VAL));
 	// self.registers.TRNG0_INT_CTRL.modify(InterruptControl::ENT_VAL::SET);
-	// debug!("ENT_VAL in CTRL");
+	// debug!("ENT_VAL in CTRL is now {}", self.registers.TRNG0_INT_CTRL. read(InterruptControl::ENT_VAL));
 	// self.registers.TRNG0_MASK.modify(InterruptMask::HW_ERR::SET);
 	// debug!("HW_ERR in MASK");
 	// self.registers.TRNG0_INT_CTRL.modify(InterruptControl::HW_ERR::SET);
@@ -495,11 +501,11 @@ impl<'a> hil::entropy::Entropy32<'a> for TRNG<'a> {
 	self.registers.TRNG0_MCTL.modify(Control::PRGM::CLEAR);
 	debug!("RunMode is set! It is {}", self.registers.TRNG0_MCTL.read(Control::PRGM));
 	// debug!("{}", self.registers.TRNG0_ENT[15].read(EntropyRead::ENT));
-	debug!("{}", self.registers.TRNG0_ENT[0].read(EntropyRead::ENT));
+	// debug!("{}", self.registers.TRNG0_ENT[0].read(EntropyRead::ENT));
 	loop {
 	    if self.registers.TRNG0_MCTL.is_set(Control::ENT_VAL) {
 		debug!("This happened.");
-		for i in 0..15 {
+		for i in 0..16 {
 		    debug!("{}", self.registers.TRNG0_ENT[i].read(EntropyRead::ENT));
 		}
 		break;
@@ -513,7 +519,6 @@ impl<'a> hil::entropy::Entropy32<'a> for TRNG<'a> {
     }
 
     fn set_client(&'a self, client: &'a dyn hil::entropy::Client32) {
-	debug!("set_client is called!");
         self.client.set(client);
     }
 }
