@@ -54,7 +54,7 @@ impl Imxrt10xxDefaultPeripherals {
             lpuart2: crate::lpuart::Lpuart::new_lpuart2(ccm),
             gpt1: crate::gpt::Gpt1::new_gpt1(ccm),
             gpt2: crate::gpt::Gpt2::new_gpt2(ccm),
-	    trng: crate::trng::TRNG::new(),
+            trng: crate::trng::TRNG::new(ccm),
         }
     }
 }
@@ -77,7 +77,7 @@ impl InterruptService<()> for Imxrt10xxDefaultPeripherals {
             nvic::GPIO4_2 => self.ports.gpio4.handle_interrupt(),
             nvic::GPIO5_1 => self.ports.gpio5.handle_interrupt(),
             nvic::GPIO5_2 => self.ports.gpio5.handle_interrupt(),
-	    nvic::TRNG => self.trng.interrupt_handler(),
+            nvic::TRNG => self.trng.interrupt_handler(),
             nvic::SNVS_LP_WRAPPER => debug!("Interrupt: SNVS_LP_WRAPPER"),
             nvic::DMA0_16..=nvic::DMA15_31 => {
                 let low = (interrupt - nvic::DMA0_16) as usize;

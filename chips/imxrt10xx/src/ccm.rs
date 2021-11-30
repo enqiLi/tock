@@ -227,6 +227,10 @@ impl Ccm {
         self.registers.ccgr[3].modify(CCGR::CG15.val(0b01 as u32));
     }
 
+    pub fn enable_trng_clock(&self) {
+        self.registers.ccgr[6].modify(CCGR::CG6.val(0b11 as u32));
+    }
+
     pub fn disable_iomuxc_snvs_clock(&self) {
         self.registers.ccgr[2].modify(CCGR::CG2::CLEAR);
         self.registers.ccgr[3].modify(CCGR::CG15::CLEAR);

@@ -10,6 +10,7 @@
 mod fcb;
 mod io;
 
+use components::rng::RngComponent;
 use imxrt1060::gpio::PinId;
 use imxrt1060::iomuxc::{MuxMode, PadId, Sion};
 use imxrt10xx as imxrt1060;
@@ -21,8 +22,6 @@ use kernel::platform::chip::ClockInterface;
 use kernel::platform::{KernelResources, SyscallDriverLookup};
 use kernel::scheduler::round_robin::RoundRobinSched;
 use kernel::{create_capability, static_init};
-use components::rng::RngComponent;
-
 
 /// Number of concurrent processes this platform supports
 const NUM_PROCS: usize = 4;
@@ -44,7 +43,7 @@ struct Teensy40 {
     alarm: &'static capsules::alarm::AlarmDriver<
         'static,
         capsules::virtual_alarm::VirtualMuxAlarm<'static, imxrt1060::gpt::Gpt1<'static>>,
-	>,
+    >,
     rng: &'static capsules::rng::RngDriver<'static>,
 
     scheduler: &'static RoundRobinSched<'static>,
@@ -311,15 +310,16 @@ pub unsafe fn main() {
     );
 
     // let rng = RngComponent::new(board_kernel, capsules::rng::DRIVER_NUM,&imxrt10xx::trng::TRNG).finalize(());
-    let rng = RngComponent::new(board_kernel, capsules::rng::DRIVER_NUM,&peripherals.trng).finalize(());
+    let rng =
+        RngComponent::new(board_kernel, capsules::rng::DRIVER_NUM, &peripherals.trng).finalize(());
     /*let rng = static_init!(
-	capsules::rng::RngDriver<'static>,
-	capsules::rng::RngDriver::new(
-	    &imxrt10xx::trng::TRNG,
-	    board_kernel.create_grant(capsules::rng::DRIVER_NUM, &memory_allocation_capability)),
- );
-    imxrt10xx::trng::TRNG.set_client(rng);
-    */
+       capsules::rng::RngDriver<'static>,
+       capsules::rng::RngDriver::new(
+           &imxrt10xx::trng::TRNG,
+           board_kernel.create_grant(capsules::rng::DRIVER_NUM, &memory_allocation_capability)),
+    );
+       imxrt10xx::trng::TRNG.set_client(rng);
+       */
 
     let scheduler = components::sched::round_robin::RoundRobinComponent::new(&PROCESSES)
         .finalize(components::rr_component_helper!(NUM_PROCS));
@@ -371,6 +371,10 @@ pub unsafe fn main() {
         &process_management_capability,
     )
     .unwrap();
+    kernel::debug!(
+        "MCTL on reset0: {:#x}",
+        core::ptr::read_volatile(0x400CC000 as *const u32)
+    );
 
     board_kernel.kernel_loop(&teensy40, chip, Some(&teensy40.ipc), &main_loop_capability);
 }
