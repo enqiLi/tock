@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 
+use crate::deferred_call_tasks::Task;
 use kernel::debug;
 use kernel::hil;
 use kernel::hil::entropy::Continue;
@@ -9,7 +10,12 @@ use kernel::utilities::registers::register_bitfields;
 use kernel::utilities::registers::register_structs;
 use kernel::utilities::registers::{ReadOnly, ReadWrite};
 use kernel::utilities::StaticRef;
+use kernel::deferred_call::DeferredCall;
 use kernel::ErrorCode;
+
+static DEFERRED_CALL: DeferredCall<Task> = unsafe {
+    DeferredCall::new(Task::TRNG)
+};
 
 register_structs! {
     TRNGRegisters {
@@ -417,22 +423,24 @@ impl<'a> TRNG<'a> {
 
     pub fn interrupt_handler(&self) {
         debug!("I got an interrupt!");
-        /*
+        
         let mut iterator = TRNGIter { trng: self, idx: 0 };
         self.client.map(|client| {
             let result = client.entropy_available(&mut iterator, Ok(()));
-            if let Continue::Done = result {
-                self.registers.TRNG0_MCTL.modify(Control::PRGM::ProgramMode);
-            } else {
-                self.registers
-                    .TRNG0_INT_MASK
-                    .modify(InterruptMask::ENT_VAL::SET);
-                self.registers
-                    .TRNG0_INT_CTRL
-                    .modify(InterruptControl::ENT_VAL::SET);
-            }
+            // if let Continue::Done = result {
+            //     self.registers.TRNG0_MCTL.modify(Control::PRGM::ProgramMode);
+            // } else {
+            //     // self.registers
+            //     //     .TRNG0_INT_MASK
+            //     //     .modify(InterruptMask::ENT_VAL::SET);
+            //     // self.registers
+            //     //     .TRNG0_INT_CTRL
+            //     //     .modify(InterruptControl::ENT_VAL::SET);
+		
+            // }
+	    result
         });
-        */
+        
     }
 
     // pub fn TRNG_read_entropy(&self) -> u32 {
@@ -501,30 +509,19 @@ impl<'a> hil::entropy::Entropy32<'a> for TRNG<'a> {
         self.registers.TRNG0_MCTL.modify(Control::SAMP_MODE::VON);
         debug!("LAST ALIVE");
         self.registers.TRNG0_MCTL.modify(Control::PRGM::CLEAR);
-        unsafe {
-            core::ptr::read_volatile(0x400CC0B8 as *const u8);
-            //core::ptr::write_volatile(0x400CC0B8 as *mut u32, 1u32);
-        }
-        debug!("DEAD");
+        // unsafe {
+        //     core::ptr::read_volatile(0x400CC0B8 as *const u8);
+        //     //core::ptr::write_volatile(0x400CC0B8 as *mut u32, 1u32);
+        // }
+        // debug!("DEAD");
         /*debug!(
             "RunMode is set! It is {}",
             self.registers.TRNG0_MCTL.read(Control::PRGM)
         );*/
         // debug!("{}", self.registers.TRNG0_ENT[15].read(EntropyRead::ENT));
         // debug!("{}", self.registers.TRNG0_ENT[0].read(EntropyRead::ENT));
-        self.registers.TRNG0_ENT[15].read(EntropyRead::ENT); // start generating values
-
-        /*
-        loop {
-            if self.registers.TRNG0_MCTL.is_set(Control::ENT_VAL) {
-                debug!("This happened.");
-                for i in 0..16 {
-                    debug!("{}", self.registers.TRNG0_ENT[i].read(EntropyRead::ENT));
-                }
-                break;
-            }
-        }
-        */
+        self.registers.TRNG0_ENT[0].read(EntropyRead::ENT); // start generating values
+	DEFERRED_CALL.set();
         Ok(())
     }
 

@@ -12,4 +12,4 @@ arch/cortex-m/src/support.rs:
 arch/cortex-m/src/syscall.rs:
 arch/cortex-m/src/systick.rs:
 
-# env-dep:TOCK_KERNEL_VERSION=release-2.0-316-gbe3921d2d
+# env-dep:TOCK_KERNEL_VERSION=release-2.0-318-g323c1302b

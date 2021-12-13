@@ -80,4 +80,4 @@ kernel/src/process_standard.rs:
 kernel/src/process_utilities.rs:
 kernel/src/syscall_driver.rs:
 
-# env-dep:TOCK_KERNEL_VERSION=release-2.0-316-gbe3921d2d
+# env-dep:TOCK_KERNEL_VERSION=release-2.0-318-g323c1302b

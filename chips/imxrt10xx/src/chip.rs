@@ -1,19 +1,21 @@
 //! Chip trait setup.
 
+use crate::deferred_call_tasks::Task;
 use core::fmt::Write;
 use cortexm7;
 use kernel::debug;
+use kernel::deferred_call;
 use kernel::platform::chip::{Chip, InterruptService};
 
 use crate::nvic;
 
-pub struct Imxrt10xx<I: InterruptService<()> + 'static> {
+pub struct Imxrt10xx<I: InterruptService<Task> + 'static> {
     mpu: cortexm7::mpu::MPU,
     userspace_kernel_boundary: cortexm7::syscall::SysCall,
     interrupt_service: &'static I,
 }
 
-impl<I: InterruptService<()> + 'static> Imxrt10xx<I> {
+impl<I: InterruptService<Task> + 'static> Imxrt10xx<I> {
     pub unsafe fn new(interrupt_service: &'static I) -> Self {
         Imxrt10xx {
             mpu: cortexm7::mpu::MPU::new(),
@@ -59,7 +61,7 @@ impl Imxrt10xxDefaultPeripherals {
     }
 }
 
-impl InterruptService<()> for Imxrt10xxDefaultPeripherals {
+impl InterruptService<Task> for Imxrt10xxDefaultPeripherals {
     unsafe fn service_interrupt(&self, interrupt: u32) -> bool {
         match interrupt {
             nvic::LPUART1 => self.lpuart1.handle_interrupt(),
@@ -100,12 +102,15 @@ impl InterruptService<()> for Imxrt10xxDefaultPeripherals {
         true
     }
 
-    unsafe fn service_deferred_call(&self, _: ()) -> bool {
-        false
+    unsafe fn service_deferred_call(&self, task: Task) -> bool {
+        match task {
+	    crate::deferred_call_tasks::Task::TRNG => self.trng.interrupt_handler(),
+	}
+	true
     }
 }
 
-impl<I: InterruptService<()> + 'static> Chip for Imxrt10xx<I> {
+impl<I: InterruptService<Task> + 'static> Chip for Imxrt10xx<I> {
     type MPU = cortexm7::mpu::MPU;
     type UserspaceKernelBoundary = cortexm7::syscall::SysCall;
 
